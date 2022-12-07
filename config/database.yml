@@ -1,0 +1,3 @@
+adapter: 'postgresql'
+encoding: utf-8
+database: 'api-sinatra'

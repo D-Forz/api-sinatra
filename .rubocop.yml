@@ -1,0 +1,14 @@
+AllCops:
+  NewCops: enable
+  Exclude: { 'Rakefile': true, 'config/**/*': true, 'db/**/*': true }
+Style/StringLiterals:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Layout/LineLength:
+  Max: 125
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+Metrics/MethodLength: { Max: 30 }
