@@ -16,7 +16,7 @@ namespace :db do
   end
 
   desc "Migrate the database"
-  task migrate: :create do
+  task :migrate do
     ActiveRecord::Base.establish_connection(db_config)
     ActiveRecord::MigrationContext.new("db/migrate/", ActiveRecord::SchemaMigration).migrate
     Rake::Task["db:schema"].invoke
@@ -31,7 +31,7 @@ namespace :db do
   end
 
   desc "Reset the database"
-  task reset: %i[drop create migrate]
+  task reset: %i[drop create migrate seed]
 
   desc "Create a db/schema.rb file"
   task :schema do
@@ -66,12 +66,13 @@ namespace :g do
     path = File.expand_path("../db/migrate/#{timestamp}_#{name}.rb", __FILE__)
     migration_class = name.split("_").map(&:capitalize).join
 
-    File.write(path, <<~BODY)
+    File.write(path, <<~BODY
       class #{migration_class} < ActiveRecord::Migration[7.0]
         def change
         end
       end
     BODY
+    )
 
     puts "Migration #{path} created"
     abort # needed stop other tasks
