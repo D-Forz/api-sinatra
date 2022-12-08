@@ -5,7 +5,7 @@ rider = Rider.new(
   username: 'rider',
   password: 'rider',
   email: 'rider@example.com',
-  location: { lat: 4.6097100, lng: -74.0817500 },
+  location: { lat: 6.17, lng: -75.58 },
   payment_method: 'CARD',
   status: 'AVAILABLE'
 )
@@ -17,7 +17,7 @@ driver = Driver.new(
   username: 'driver',
   password: 'driver',
   status: 'AVAILABLE',
-  location: { lat: 4.6097100, lng: -74.0817500 }
+  location: { lat: 6.17, lng: -75.58 }
 )
 driver.save
 
