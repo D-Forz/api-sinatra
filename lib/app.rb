@@ -10,6 +10,10 @@ after do
   ActiveRecord::Base.connection.close
 end
 
+get '/' do
+  redirect to "/api/v1/"
+end
+
 namespace '/api/v1' do
   get '/' do
     {
@@ -27,12 +31,13 @@ namespace '/api/v1' do
 
   get '/riders/:id/payment_method' do
     rider = Rider.find(params[:id])
-    rider.register_payment(rider.payment_method)
+    rider.register_payment(rider.payment_method, rider.get_acceptance_token)
   end
 
   get '/riders/:id/request_ride' do
     rider = Rider.find(params[:id])
-    rider.request_ride(rider.location)
+    driver = Driver.where(status: 'AVAILABLE').first
+    rider.request_ride(rider.location, driver)
   end
 
   get '/rides' do
@@ -40,11 +45,14 @@ namespace '/api/v1' do
   end
 
   get '/rides/:id' do
+    redirect to "/api/v1/" unless Ride.exists?(params[:id])
+
     ride = Ride.find(params[:id])
-    total = ride.driver.finish_ride(params[:id])
+    body = ride.driver.finish_ride(params[:id])
+    ride.driver.create_transaction(body)
     {
       message: "Ride finished",
-      total: total
+      total: body[:amount_in_cents]
     }.to_json
   end
 end
