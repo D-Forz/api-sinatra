@@ -1,3 +1,4 @@
+require 'webmock/rspec'
 require 'support/factory_bot'
 require './lib/app'
 

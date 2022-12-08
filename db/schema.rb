@@ -44,4 +44,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_152705) do
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["rider_id"], name: "index_rides_on_rider_id"
   end
+
+  create_table "transactions", force: :cascade do |t|
+    t.string "payment_method", null: false
+    t.string "payment_id", null: false
+    t.string "reference", null: false
+    t.string "amount", default: "0", null: false
+    t.string "currency", default: "COP", null: false
+    t.string "rider_email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
 end

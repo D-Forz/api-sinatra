@@ -12,4 +12,5 @@ gem "httparty", "~> 0.20.0"
 group :test do
   gem "rspec", "~> 3.12"
   gem "factory_bot", "~> 6.2"
+  gem "webmock", "~> 3.18"
 end
