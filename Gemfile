@@ -8,6 +8,7 @@ gem "activerecord", "~> 7.0"
 gem "pg", "~> 1.4"
 gem "dotenv", "~> 2.8"
 gem "httparty", "~> 0.20.0"
+gem "puma", "~> 6.0"
 
 group :test do
   gem "rspec", "~> 3.12"

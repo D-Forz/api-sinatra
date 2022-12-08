@@ -19,7 +19,7 @@ class Driver < ActiveRecord::Base
     total = ((distance * 1000) + (time * 200) + 3500).round(2)
 
     {
-      amount_in_cents: total.to_i,
+      amount_in_cents: total.to_i * 100,
       currency: 'COP',
       customer_email: ride.rider.email,
       payment_method: {
