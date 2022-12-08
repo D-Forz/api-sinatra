@@ -1,5 +1,5 @@
 class Rider < ActiveRecord::Base
-  has_many :transactions, through: :rides
+  has_many :rides
 
   validates :username, presence: true, uniqueness: true
   validates :password, :location, presence: true
@@ -20,16 +20,18 @@ class Rider < ActiveRecord::Base
     HTTParty.post(
       "#{base_url}payment_sources",
       body: body.to_json,
-      headers: { "Authorization": "Bearer #{ENV.fetch('APP_PRIVATE_TOKEN')}" }
+      headers: { "Authorization": "Bearer #{ENV.fetch('APP_PUBLIC_TOKEN')}" }
     )
   end
 
-  def request_ride
-    return false unless self.status == 'AVAILABLE'
-
+  def request_ride(origin)
     driver = Driver.where(status: 'AVAILABLE').first
-    self.status = 'RIDE'
-    driver.status = 'RIDE'
-    self.save
-    driver.save
+    return {message: 'No available drivers'}.to_json unless driver
+
+    ride = Ride.create(origin: { lat: origin['lat'], lng: origin['lng'] }, rider: self)
+    ride.update(driver: driver)
+    driver.update(status: 'RIDE')
+    self.update(status: 'RIDE')
+    return ride
+  end
 end
