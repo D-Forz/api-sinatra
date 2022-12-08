@@ -44,5 +44,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_152705) do
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["rider_id"], name: "index_rides_on_rider_id"
   end
-
 end
