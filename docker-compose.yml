@@ -1,21 +1,16 @@
-volumes:
-  data:
-
 services:
-  postgres:
-    image: postgres:latest
+  db:
+    image: postgres
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgrespw
     ports:
       - 5432:5432
     volumes:
-      - data:/var/lib/postgresql
+      - ./tmp/db:/var/lib/postgresql
   api:
     build: .
-    command: rake db:reset & bundle exec ruby lib/app.rb
-    image: api-sinatra
     ports:
       - 4567:4567
     depends_on:
-      - postgres
-    # restart: on-failure
+      - db
