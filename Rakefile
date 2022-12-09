@@ -1,23 +1,23 @@
 require 'active_record'
 
-task :default do
-  sh 'bundle exec ruby lib/app.rb'
+task :start do
+  sh 'rackup -p 4567'
 end
 
 namespace :db do
-  db_config = YAML.load(File.open("config/database.yml"))
-  db_config_admin = db_config.merge({ 'database' => 'postgres', 'schema_search_path' => 'public' })
+  db_config = YAML.load(File.open("config/database.yml"), aliases: true)
+  db_config_admin = db_config["default"].merge({ 'database' => 'postgres', 'schema_search_path' => 'public' })
 
   desc "Create the database"
   task :create do
     ActiveRecord::Base.establish_connection(db_config_admin)
-    ActiveRecord::Base.connection.create_database(db_config["database"])
+    ActiveRecord::Base.connection.create_database(db_config["default"]["database"])
     puts "Database created"
   end
 
   desc "Migrate the database"
   task :migrate do
-    ActiveRecord::Base.establish_connection(db_config)
+    ActiveRecord::Base.establish_connection(db_config["default"])
     ActiveRecord::MigrationContext.new("db/migrate/", ActiveRecord::SchemaMigration).migrate
     Rake::Task["db:schema"].invoke
     puts "Database migrated"
@@ -26,7 +26,7 @@ namespace :db do
   desc "Drop the database"
   task :drop do
     ActiveRecord::Base.establish_connection(db_config_admin)
-    ActiveRecord::Base.connection.drop_database(db_config["database"])
+    ActiveRecord::Base.connection.drop_database(db_config["default"]["database"])
     puts "Database deleted"
   end
 
@@ -35,7 +35,7 @@ namespace :db do
 
   desc "Create a db/schema.rb file"
   task :schema do
-    ActiveRecord::Base.establish_connection(db_config)
+    ActiveRecord::Base.establish_connection(db_config["default"])
     require "active_record/schema_dumper"
     filename = "db/schema.rb"
     File.open(filename, "w:utf-8") do |file|
@@ -46,12 +46,12 @@ namespace :db do
 
   desc 'Populate the database'
   task :seed do
-    ActiveRecord::Base.establish_connection(db_config)
+    ActiveRecord::Base.establish_connection(db_config["default"])
     load 'db/seed.rb' if File.exist?('db/seed.rb')
   end
 
   task :rollback do
-    ActiveRecord::Base.establish_connection(db_config)
+    ActiveRecord::Base.establish_connection(db_config["default"])
     ActiveRecord::MigrationContext.new("db/migrate/").rollback
     Rake::Task["db:schema"].invoke
     puts "Last migration has been reverted."

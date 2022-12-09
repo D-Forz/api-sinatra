@@ -12,3 +12,5 @@ RUN bundle install
 EXPOSE 4567
 
 COPY . /api-sinatra
+
+CMD ["bundle", "exec", "rake", "db:reset", "start"]

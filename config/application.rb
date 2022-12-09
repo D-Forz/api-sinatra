@@ -8,7 +8,7 @@ Dir[File.join(dir, '../app/models/*.rb')].each { |file| require file }
 
 # Initialize the database
 db_config = YAML.load(File.open("config/database.yml"), aliases: true)
-ActiveRecord::Base.establish_connection(db_config)
+ActiveRecord::Base.establish_connection(db_config["default"])
 
 # Set a logger so that you can view the SQL actually performed by Active Record
 
@@ -17,4 +17,3 @@ ActiveRecord::Base.establish_connection(db_config)
 #   "#{msg}\n"
 # end
 # ActiveRecord::Base.logger = logger
-

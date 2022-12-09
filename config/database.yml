@@ -1,3 +1,8 @@
-adapter: 'postgresql'
-encoding: utf-8
-database: 'api-sinatra'
+default: &default
+  adapter: postgresql
+  encoding: UTF-8
+  database: api_sinatra
+  host: db # localhost if you are not using docker
+  username: postgres
+  password: postgrespw
+  pool: 5
