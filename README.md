@@ -2,7 +2,12 @@
 
 A simple api created with sinatra to emulate a ride-hailing service.
 
+To run this project, you will need to add the following environment variables to your `.env` file
 
+`APP_PUBLIC_TOKEN`
+`APP_PRIVATE_TOKEN`
+`TOKENIZED_CARD`
+`CARD_ID`
 
 
 ## Run Locally
