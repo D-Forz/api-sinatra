@@ -1,7 +1,7 @@
 require 'active_record'
 
 task :start do
-  sh 'rackup -p 4567'
+  sh 'rackup --host 0.0.0.0 --port 4567'
 end
 
 namespace :db do
