@@ -14,7 +14,7 @@ gem "puma", "~> 6.0"
 gem "rake", "~> 13.0"
 
 group :test do
-  gem "rspec", "~> 3.12"
+  gem "rspec", "~> 3.12.0"
   gem "factory_bot", "~> 6.2"
   gem "webmock", "~> 3.18"
 end
